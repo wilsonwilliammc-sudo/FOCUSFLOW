@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5968/5968292.png">
+    
     <title>FocusFlow - Minimalist Study Planner</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +44,6 @@
             animation: task-complete-pop 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         
-        /* Utilitários para animações de entrada */
         .animate-in {
             animation-duration: 0.3s;
             animation-fill-mode: both;
@@ -52,9 +56,8 @@
         @keyframes slide-in-top-kf { from { transform: translateY(-0.5rem); } to { transform: translateY(0); } }
         @keyframes zoom-in-kf { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* Ajuste para inputs em mobile */
         input, select, textarea {
-            font-size: 16px !important; /* Impede zoom no iOS */
+            font-size: 16px !important;
         }
     </style>
 <script type="importmap">
@@ -70,5 +73,14 @@
 </head>
 <body>
     <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('SW registrado!', reg))
+            .catch(err => console.log('Erro ao registrar SW:', err));
+        });
+      }
+    </script>
 </body>
 </html>
