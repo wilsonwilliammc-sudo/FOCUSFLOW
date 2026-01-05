@@ -39,7 +39,6 @@ const ChatWidget: React.FC = () => {
       const result = await chatRef.current.sendMessageStream({ message: userMessage });
       let fullResponse = '';
       
-      // Add empty placeholder for the model response
       setMessages(prev => [...prev, { role: 'model', text: '' }]);
 
       for await (const chunk of result) {
@@ -59,22 +58,22 @@ const ChatWidget: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60] flex flex-col items-end pointer-events-none">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-[350px] md:w-[400px] h-[500px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
+        <div className="pointer-events-auto mb-4 w-[calc(100vw-2rem)] sm:w-[350px] md:w-[400px] h-[70vh] max-h-[600px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
-          <div className="bg-slate-900 p-4 text-white flex items-center justify-between">
+          <div className="bg-slate-900 p-4 text-white flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-emerald-500 rounded-lg">
                 <ICONS.Brain />
               </div>
               <div>
-                <h3 className="font-bold text-sm">Assistente de Estudos</h3>
-                <p className="text-[10px] text-slate-400 uppercase tracking-widest">FocusFlow AI Online</p>
+                <h3 className="font-bold text-sm">Assistente IA</h3>
+                <p className="text-[10px] text-slate-400 uppercase tracking-widest">FocusFlow Online</p>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="hover:bg-white/10 p-1 rounded-lg transition-colors">
+            <button onClick={() => setIsOpen(false)} className="hover:bg-white/10 p-2 rounded-lg transition-colors">
               <ICONS.X />
             </button>
           </div>
@@ -92,30 +91,21 @@ const ChatWidget: React.FC = () => {
                 </div>
               </div>
             ))}
-            {isLoading && !messages[messages.length - 1]?.text && (
-               <div className="flex justify-start">
-                  <div className="bg-white border border-slate-200 text-slate-700 p-3 rounded-2xl rounded-bl-none shadow-sm">
-                    <span className="animate-bounce">●</span>
-                    <span className="animate-bounce [animation-delay:0.2s]">●</span>
-                    <span className="animate-bounce [animation-delay:0.4s]">●</span>
-                  </div>
-               </div>
-            )}
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-slate-100 flex gap-2">
+          <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-slate-100 flex gap-2 flex-shrink-0">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Pergunte sobre qualquer matéria..."
-              className="flex-grow bg-slate-100 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-slate-900 transition-all"
+              placeholder="Dúvida?"
+              className="flex-grow bg-slate-100 border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-slate-900 transition-all"
             />
             <button 
               type="submit" 
               disabled={!inputValue.trim() || isLoading}
-              className="p-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 disabled:opacity-50 transition-all shadow-md"
+              className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-slate-800 disabled:opacity-50 transition-all shadow-md flex items-center justify-center"
             >
               <ICONS.Send />
             </button>
@@ -126,7 +116,7 @@ const ChatWidget: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl transition-all duration-300 hover:scale-110 ${
+        className={`pointer-events-auto w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 ${
           isOpen ? 'bg-slate-900 rotate-90' : 'bg-emerald-600'
         }`}
       >

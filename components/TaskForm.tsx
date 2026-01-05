@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Task, Priority } from '../types';
 import Button from './Button';
 import { ICONS } from '../constants';
@@ -23,63 +23,63 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onCancel, initialData }) =>
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-hidden">
       <form 
         onSubmit={handleSubmit}
-        className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden animate-in zoom-in-95 duration-200"
+        className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[90vh] sm:max-h-none animate-in zoom-in-95 duration-200"
       >
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto custom-scrollbar">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-slate-800">
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
               {initialData ? 'Editar Tarefa' : 'Nova Tarefa'}
             </h2>
-            <Button variant="ghost" onClick={onCancel} className="p-1 h-8 w-8">
+            <button type="button" onClick={onCancel} className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
               <ICONS.X />
-            </Button>
+            </button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Título</label>
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">O que vais estudar?</label>
               <input
                 type="text"
                 autoFocus
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Ex: Estudar Cálculo 1"
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition-all"
+                placeholder="Ex: Prova de Biologia"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all placeholder:text-slate-300"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Descrição (opcional)</label>
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Notas (opcional)</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Ex: Capítulos 1 a 3 do livro"
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition-all min-h-[100px]"
+                placeholder="Detalhes importantes..."
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all min-h-[100px] resize-none"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Data</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Quando?</label>
                 <input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition-all"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Prioridade</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Prioridade</label>
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as Priority)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition-all appearance-none"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all appearance-none cursor-pointer"
                 >
                   <option value={Priority.LOW}>Baixa</option>
                   <option value={Priority.MEDIUM}>Média</option>
@@ -90,9 +90,20 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onCancel, initialData }) =>
           </div>
         </div>
 
-        <div className="p-6 bg-slate-50 flex items-center justify-end gap-3">
-          <Button variant="secondary" onClick={onCancel}>Cancelar</Button>
-          <Button type="submit">Salvar Tarefa</Button>
+        <div className="p-6 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-2xl">
+          <button 
+            type="button" 
+            onClick={onCancel}
+            className="flex-1 sm:flex-none px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button 
+            type="submit"
+            className="flex-1 sm:flex-none px-8 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-lg shadow-slate-900/10 hover:bg-slate-800 active:scale-95 transition-all"
+          >
+            Salvar
+          </button>
         </div>
       </form>
     </div>

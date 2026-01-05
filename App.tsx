@@ -113,88 +113,85 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col antialiased">
+    <div className="min-h-screen bg-slate-50 flex flex-col antialiased overflow-x-hidden">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4">
+        <div className="max-w-4xl mx-auto h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-sm">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-sm">
               <ICONS.Brain />
             </div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">FocusFlow</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">FocusFlow</h1>
           </div>
-          <Button onClick={() => setIsFormOpen(true)} icon={<ICONS.Plus />}>
-            Nova Tarefa
+          <Button onClick={() => setIsFormOpen(true)} icon={<ICONS.Plus />} className="text-sm px-3 sm:px-4">
+            <span className="hidden sm:inline">Nova Tarefa</span>
+            <span className="sm:hidden">Nova</span>
           </Button>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto w-full px-4 py-8 flex-grow">
+      <main className="max-w-4xl mx-auto w-full px-4 py-6 sm:py-8 flex-grow">
         
-        {/* Daily Motivation & AI Coach */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-          <div className="lg:col-span-2 bg-slate-900 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden flex flex-col justify-center min-h-[180px]">
-             <div className="absolute top-0 right-0 p-6 opacity-10">
+        {/* Motivation Banner & Progress */}
+        <section className="flex flex-col gap-4 mb-8">
+          <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden flex flex-col justify-center min-h-[140px] sm:min-h-[180px]">
+             <div className="absolute top-0 right-0 p-4 opacity-10">
                 <ICONS.Sparkles />
              </div>
-             <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-3">Inspiração do Dia</p>
-             <h2 className="text-2xl font-semibold leading-tight italic">
-               "{motivation || "Carregando motivação..."}"
+             <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">Estuda com Alma</p>
+             <h2 className="text-xl sm:text-2xl font-semibold leading-tight italic">
+               "{motivation || "Prepara o café, vamos começar..."}"
              </h2>
           </div>
 
-          <div className="bg-emerald-600 rounded-3xl p-6 text-white shadow-lg flex flex-col justify-between">
-            <div>
-              <p className="text-emerald-200 text-xs font-bold uppercase tracking-widest mb-2">Progresso Diário</p>
-              <h3 className="text-4xl font-black">{stats.progress}%</h3>
+          <div className="bg-emerald-600 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-emerald-200 text-[10px] font-bold uppercase tracking-widest mb-1">O Teu Progresso</p>
+                <h3 className="text-3xl font-black tracking-tight">{stats.progress}%</h3>
+              </div>
+              <div className="p-3 bg-white/10 rounded-2xl">
+                <ICONS.Check />
+              </div>
             </div>
-            <div className="w-full bg-emerald-700/50 h-2 rounded-full mt-4 overflow-hidden">
-              <div className="bg-white h-full transition-all duration-1000" style={{ width: `${stats.progress}%` }} />
+            <div className="w-full bg-emerald-700/50 h-2.5 rounded-full overflow-hidden">
+              <div className="bg-white h-full transition-all duration-1000 ease-out" style={{ width: `${stats.progress}%` }} />
             </div>
-            <p className="text-emerald-100 text-xs mt-4">
-              {stats.completed} de {stats.total} tarefas concluídas
-            </p>
           </div>
         </section>
 
-        {/* Dashboard Stats Cards */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-           <div className="bg-white border border-slate-200 p-4 rounded-2xl">
-              <p className="text-slate-500 text-xs font-bold uppercase mb-1">Total</p>
-              <p className="text-2xl font-bold text-slate-900">{stats.total}</p>
-           </div>
-           <div className="bg-white border border-slate-200 p-4 rounded-2xl">
-              <p className="text-slate-500 text-xs font-bold uppercase mb-1">Pendentes</p>
-              <p className="text-2xl font-bold text-slate-900">{stats.pending}</p>
-           </div>
-           <div className="bg-white border border-slate-200 p-4 rounded-2xl">
-              <p className="text-emerald-600 text-xs font-bold uppercase mb-1">Concluídas</p>
-              <p className="text-2xl font-bold text-emerald-600">{stats.completed}</p>
-           </div>
-           <div className="bg-white border border-slate-200 p-4 rounded-2xl">
-              <p className="text-blue-600 text-xs font-bold uppercase mb-1">Hoje</p>
-              <p className="text-2xl font-bold text-blue-600">{stats.totalToday}</p>
-           </div>
+        {/* Dashboard Stats - Dynamic Grid */}
+        <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
+           {[
+             { label: 'Total', value: stats.total, color: 'slate-900' },
+             { label: 'Pendentes', value: stats.pending, color: 'slate-900' },
+             { label: 'Feitas', value: stats.completed, color: 'emerald-600' },
+             { label: 'Hoje', value: stats.totalToday, color: 'blue-600' }
+           ].map((stat, i) => (
+             <div key={i} className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">{stat.label}</p>
+                <p className={`text-2xl font-bold text-${stat.color}`}>{stat.value}</p>
+             </div>
+           ))}
         </section>
 
         {/* AI SMART PLAN */}
         <section className="mb-10">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-             <div className="flex items-center justify-between mb-4">
+          <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm">
+             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
                 <div className="flex items-center gap-3">
-                   <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+                   <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
                       <ICONS.Brain />
                    </div>
-                   <h3 className="font-bold text-slate-900">Coach de Prioridades (IA)</h3>
+                   <h3 className="font-bold text-slate-900 tracking-tight">Coach de Prioridades</h3>
                 </div>
-                <Button 
-                  variant="secondary" 
+                <button 
                   onClick={handleSmartPriority} 
                   disabled={isLoadingAI || tasks.length === 0}
-                  className="text-sm"
+                  className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-indigo-700 active:scale-95 disabled:opacity-50 transition-all shadow-md"
                 >
-                  {isLoadingAI ? "Analisando..." : "Analisar minhas tarefas"}
-                </Button>
+                  {isLoadingAI ? "A ler os teus planos..." : "O que fazer agora?"}
+                </button>
              </div>
              
              {aiPlan ? (
@@ -202,33 +199,35 @@ const App: React.FC = () => {
                  <p className="leading-relaxed">✨ {aiPlan}</p>
                </div>
              ) : (
-               <p className="text-slate-400 text-sm italic">
-                 Clique no botão acima para que a IA analise seus prazos e prioridades e sugira o melhor caminho.
+               <p className="text-slate-400 text-xs sm:text-sm italic px-1">
+                 Deixa a IA analisar os teus prazos e sugerir o melhor caminho para hoje.
                </p>
              )}
           </div>
         </section>
 
         {/* Filters and Task List */}
-        <section className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
-            {(['all', 'pending', 'completed'] as const).map((f) => (
-              <button 
-                key={f}
-                onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${filter === f ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'}`}
-              >
-                {f === 'all' ? 'Todas' : f === 'pending' ? 'Pendentes' : 'Feitas'}
-              </button>
-            ))}
+        <section className="mb-6 space-y-4">
+          <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm overflow-x-auto no-scrollbar">
+            <div className="flex min-w-full sm:min-w-0">
+              {(['all', 'pending', 'completed'] as const).map((f) => (
+                <button 
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`flex-1 px-4 py-2 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all whitespace-nowrap ${filter === f ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'}`}
+                >
+                  {f === 'all' ? 'Todas' : f === 'pending' ? 'Pendentes' : 'Concluídas'}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+          <div className="flex items-center justify-end gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">
             <span>Ordenar:</span>
             <select 
               value={sortBy} 
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="bg-transparent text-slate-900 focus:outline-none cursor-pointer border-b border-slate-300 pb-0.5"
+              className="bg-transparent text-slate-900 focus:outline-none cursor-pointer border-b-2 border-slate-200 pb-0.5"
             >
               <option value="date">Data</option>
               <option value="priority">Prioridade</option>
@@ -237,18 +236,18 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section className="space-y-4">
+        <section className="space-y-4 pb-20">
           {sortedTasks.length > 0 ? (
             sortedTasks.map(task => (
               <TaskCard key={task.id} task={task} onToggle={toggleTask} onDelete={deleteTask} onEdit={setEditingTask} />
             ))
           ) : (
-            <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-300">
-              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
+            <div className="text-center py-16 sm:py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200">
+              <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                 <ICONS.Calendar />
               </div>
-              <p className="text-slate-500 font-medium">Nada por aqui ainda.</p>
-              <p className="text-slate-400 text-sm mt-1">Organize seus estudos criando sua primeira tarefa.</p>
+              <p className="text-slate-600 font-bold">Tudo limpo!</p>
+              <p className="text-slate-400 text-xs mt-1">Cria a tua primeira meta de estudos.</p>
             </div>
           )}
         </section>
@@ -261,8 +260,8 @@ const App: React.FC = () => {
         <TaskForm onSave={editingTask ? updateTask : addTask} onCancel={() => { setIsFormOpen(false); setEditingTask(undefined); }} initialData={editingTask} />
       )}
 
-      <footer className="py-10 text-center">
-        <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em]">FocusFlow &copy; Inteligência para Estudantes</p>
+      <footer className="py-8 text-center bg-slate-100/50">
+        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">FocusFlow &bull; Powered by Gemini 3</p>
       </footer>
     </div>
   );

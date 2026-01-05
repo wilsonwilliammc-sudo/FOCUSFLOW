@@ -3,7 +3,8 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="theme-color" content="#0f172a">
     <title>FocusFlow - Minimalist Study Planner</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +14,8 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: contain;
         }
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
@@ -36,24 +39,23 @@
             animation: task-complete-pop 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         
-        /* Utilitários para animações de entrada que já estamos usando */
+        /* Utilitários para animações de entrada */
         .animate-in {
             animation-duration: 0.3s;
             animation-fill-mode: both;
         }
-        .fade-in {
-            animation-name: fade-in-kf;
-        }
-        .slide-in-from-top-2 {
-            animation-name: slide-in-top-kf;
-        }
-        .zoom-in-95 {
-            animation-name: zoom-in-kf;
-        }
+        .fade-in { animation-name: fade-in-kf; }
+        .slide-in-from-top-2 { animation-name: slide-in-top-kf; }
+        .zoom-in-95 { animation-name: zoom-in-kf; }
 
         @keyframes fade-in-kf { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slide-in-top-kf { from { transform: translateY(-0.5rem); } to { transform: translateY(0); } }
         @keyframes zoom-in-kf { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* Ajuste para inputs em mobile */
+        input, select, textarea {
+            font-size: 16px !important; /* Impede zoom no iOS */
+        }
     </style>
 <script type="importmap">
 {
